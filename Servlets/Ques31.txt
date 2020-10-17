@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<h2>Enter Book details</h2>
+	<form action="Ques31" method="post">
+	Book No : <input type="text" name="no" ><br>
+	Book Name : <input type="text" name="name" ><br>
+	Author : <input type="text" name="author" ><br>
+	Price : <input type="text" name="price" ><br>
+	Publisher : <input type="text" name="publisher" ><br>
+	Date of Publish : <input type="text" name="dop" ><br>
+	
+	<input type="submit" value="Add" ><br>
+	
+	</form>
+</body>
+</html>
+
+--------------------------
+
+
+package Assignments_1;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
+@WebServlet("/Ques31")
+public class Ques31 extends HttpServlet {
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String no = request.getParameter("no");
+		String name = request.getParameter("name");
+		String author = request.getParameter("author");
+		String price = request.getParameter("price");
+		String publisher = request.getParameter("publisher");
+		String dop = request.getParameter("dop");
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/JDBC","root","");
+			PreparedStatement s = con.prepareStatement("insert into books values(?,?,?,?,?,?)");
+
+			s.setString(1, no);
+			s.setString(2, name);
+			s.setString(3, author);
+			s.setString(4, price);
+			s.setString(5, publisher);
+			s.setString(6, dop);
+			
+			int i = s.executeUpdate();
+			
+			con.close();
+			response.sendRedirect("/Ques31_1");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+	
+	}
+
+}
+
+
+----------------------------------------
+
+
+package Assignments_1;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class Ques31_1
+ */
+@WebServlet("/Ques31_1")
+public class Ques31_1 extends HttpServlet {
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/html");
+		PrintWriter out = response.getWriter();
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/JDBC","root","");
+			Statement s = con.createStatement();
+			ResultSet rs = s.executeQuery("Select * from books");
+			while(rs.next()) {
+				out.print(rs.getString("book_no")+"<br>");
+				out.print(rs.getString("book_name")+"<br>");
+				out.print(rs.getString("book_author")+"<br>");
+				out.print(rs.getString("book_price")+"<br>");
+				out.print(rs.getString("book_publisher")+"<br>");
+				out.print(rs.getString("book_dop")+"<br>");
+				
+			}
+			
+			con.close();
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+}
