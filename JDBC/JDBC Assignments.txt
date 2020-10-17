@@ -1,0 +1,887 @@
+
+Que 1)
+--------
+package Jdbc;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+
+public class Assignment1 {
+
+	public static void main(String[] args)  throws Exception{
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/CDAC1", "root", "");
+		Statement s = con.createStatement();
+		s.execute("create table Student1 ( rno int, name varchar(50), marks int, date_of_birth varchar(50))");
+		System.out.println("Table Created..!!");
+		
+		s.close();
+		con.close();
+
+	}
+
+}
+
+
+=============================================================================================================
+
+Que2)
+--------
+
+package Jdbc;
+
+import java.util.Scanner;
+
+//import com.mysql.jdbc.PreparedStatement;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+
+public class Assignment1 {
+
+	public static void main(String[] args)  throws Exception{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter number of Records u want to insert : ");
+		int n = sc.nextInt();
+		
+		for(int i=0; i<n; i++) {
+			
+			System.out.print("Enter Roll No : ");
+			int rno = sc.nextInt();
+			
+			sc.nextLine();
+			
+			System.out.print("Enter Student Name : ");
+			String name = sc.nextLine();
+			
+			System.out.print("Enter Student Marks : ");
+			int marks = sc.nextInt();
+			
+			System.out.println("Enter Date Of Birth : ");
+			String date_of_birth = sc.nextLine();
+			
+				Class.forName("com.mysql.jdbc.Driver");
+				Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/CDAC1", "root", "");
+				java.sql.PreparedStatement s = con.prepareStatement("Insert into student1 ( rno , name , marks, date_of_birth ) values (?, ?, ?, ?)");
+				s.setInt(1, rno);
+				s.setString(2, name);
+				s.setInt(3, marks);
+				s.setString(4,  date_of_birth);
+				int count = s.executeUpdate();
+				System.out.println(count + " row/s Affected");
+		
+				s.close();
+				con.close();
+		}
+	}
+}
+
+
+=============================================================================================================
+Que3)
+--------
+
+package Jdbc;
+
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+
+public class Assignment1 {
+
+	public static void main(String[] args)  throws Exception{
+				
+		
+				String sql = "Select * from Student1";
+				Class.forName("com.mysql.jdbc.Driver");
+				Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/CDAC1", "root", "");
+				Statement s = con.createStatement();
+				ResultSet rs = s.executeQuery(sql);
+				
+				while (rs.next()) {
+					System.out.println(rs.getInt(1) + "  " +rs.getString(2) + "  " +rs.getInt(3) + "  " +rs.getString(4) );
+				}
+				
+				s.close();
+				con.close();
+		
+
+	}
+
+}
+
+
+=============================================================================================================
+
+Que4)
+-------
+package Jdbc;
+
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+
+public class Assignment1 {
+
+	public static void main(String[] args)  throws Exception{
+				
+		
+				String sql = "Select * from Student1 order by marks desc";
+				Class.forName("com.mysql.jdbc.Driver");
+				Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/CDAC1", "root", "");
+				Statement s = con.createStatement();
+				ResultSet rs = s.executeQuery(sql);
+				
+
+				while (rs.next()) {
+					System.out.println(rs.getInt(1) + "  " +rs.getString(2) + "  " +rs.getInt(3) + "  " +rs.getString(4) );
+				}
+				
+				s.close();
+				con.close();
+		
+
+	}
+
+}
+
+
+====================================================================================================================
+
+Que5) 
+-------
+package Jdbc;
+
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+
+public class Assignment1 {
+
+	public static void main(String[] args)  throws Exception{
+				
+		
+				String sql = "Select * from Student1";
+				Class.forName("com.mysql.jdbc.Driver");
+				Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/CDAC1", "root", "");
+				Statement s = con.createStatement();
+				int i = 0 ;
+				ResultSet rs = s.executeQuery(sql);
+				while(rs.next()) {
+					i++;
+				}
+				System.out.println(i);
+								
+				s.close();
+				con.close();
+	}
+}
+
+====================================================================================================================
+
+Que 6)
+--------
+
+package Jdbc;
+
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Scanner;
+
+
+public class Assignment1 {
+
+	public static void main(String[] args)  throws Exception{
+																							
+				Class.forName("com.mysql.jdbc.Driver");
+				Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/CDAC1", "root", "");
+				Statement s = con.createStatement();
+						
+				s.addBatch("create table Employee2 (Id int, Name varchar(35))" );
+				s.addBatch("Insert into Employee2 (Id, Name) values (1, 'A')");
+				s.addBatch("Insert into Employee2 (Id, Name) values (2, 'B')");
+				s.addBatch("Insert into Employee2 (Id, Name) values (3, 'C')");
+				s.addBatch("Insert into Employee2 (Id, Name) values (4, 'D')");
+								
+				s.addBatch("delete from Employee2 where Id = 1");
+				s.addBatch("Update  Employee2 set name = 'Akash' where Id = 2");
+				
+				 s.executeBatch();
+				 
+				 ResultSet rs = s.executeQuery("Select * from Employee2");
+				 
+				 while(rs.next()) {
+					 System.out.println(rs.getInt(1) +"  " + rs.getString(2));
+				 }
+				 
+				 System.out.println("Crud Operations....!!!");
+								
+				s.close();
+				con.close();
+	}
+}
+
+====================================================================================================================
+
+Que 7)
+--------
+
+package JDBC;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+
+import java.util.Scanner;
+
+public class Que7 {
+
+	public static void main(String[] args) throws Exception{
+		Scanner sc = new Scanner(System.in);
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/CDAC1", "root", "");
+		
+		System.out.println("Enter Roll Number : ");
+		int rno = sc.nextInt();		
+		PreparedStatement s =(PreparedStatement) con.prepareStatement("Select * from Student3 where rno=?");
+		s.setInt(1, rno);	
+		//Statement s = con.createStatement();
+		ResultSet rs = s.executeQuery();
+		while(rs.next()) {
+			System.out.println(rs.getInt(1) + "  " +rs.getString(2) + "  " + rs.getInt(3) + "  " +rs.getString(4));
+		}
+		
+		
+		s.close();
+		con.close();
+		sc.close();
+
+	}
+
+}
+
+
+====================================================================================================================
+
+Que 8)
+--------
+
+package Jdbc;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+public class AssignmentQue8 {
+
+	public static void main(String[] args) throws Exception{
+		
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/CDAC1", "root", "");
+		Statement s = con.createStatement();
+				
+		
+		String query = "Select marks from Student1";
+		 ResultSet rs = s.executeQuery(query);	
+		 
+		 float AvgMarks = 0 ;
+		 int count = 0;
+		 
+		 while(rs.next()){
+			 count++;						
+			 AvgMarks += rs.getInt(1);			
+			 System.out.println(rs.getInt(1));			 
+		 }
+		 System.out.println(AvgMarks);
+		 System.out.println(count);
+			
+		 System.out.println("Average Marks of Students : " + AvgMarks/count);
+		
+						
+		s.close();
+		con.close();
+
+	}
+
+}
+
+
+====================================================================================================================
+
+Que 9)
+--------
+
+package JDBC;
+
+import java.util.Scanner;
+import java.sql.*;
+
+public class Que9 {
+
+	public static void main(String[] args) throws Exception {
+		
+		
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/CDAC1", "root", "");
+		
+		Scanner sc = new Scanner(System.in);
+		
+		//1. Create a Table
+		Statement s = con.createStatement();
+		s.execute("create table student3 (rno int, name varchar(50), marks int, date_of_birth varchar(50))");
+		System.out.println("Table created successfully..!!");
+		s.close();
+		
+		//2. ALter table
+		Statement s1 = con.createStatement();
+		s1.execute("Alter table Student3 modify date_of_birth date");
+		System.out.println("Table Altered Successfully...!!");
+		s1.close();
+		
+		// 3. Insert IntoTable
+		System.out.println("Enter number of records u want to insert : ");
+		int n = sc.nextInt();
+		String query = "Insert into student3 (rno, name, marks, date_of_birth) values (?,?,?,?)";
+		for(int i=0;i<n; i++) {
+			
+			System.out.print("Enter Roll No : ");
+			int rno = sc.nextInt();
+			
+			sc.nextLine();
+			System.out.print("Enter Name : ");
+			String name = sc.nextLine();
+			
+			System.out.print("Enter Marks : ");
+			int marks = sc.nextInt();
+			
+			sc.nextLine();
+			System.out.print("Enter Date_Of_Birth : " );
+			String date_of_birth = sc.next();
+						
+			PreparedStatement s3 = con.prepareStatement(query);
+			s3.setInt(1,rno);
+			s3.setString(2, name);
+			s3.setInt(3, marks);
+			s3.setString(4, date_of_birth);
+			
+			int count = s3.executeUpdate();
+			System.out.println(count +" row/s Affected...!!");
+					
+			s3.close();
+		}
+		
+		//4. Update a Field
+		System.out.println("Enter the Roll No which u want to update : ");
+		int uR = sc.nextInt();
+		sc.nextLine();
+		System.out.println("Enter the name u want to Update : ");
+		String uN = sc.nextLine();
+		
+		PreparedStatement s5 = con.prepareStatement("Update student3 set name = ? where rno = ?");
+		s5.setInt(1, uR);
+		s5.setString(2, uN);
+		int up = s5.executeUpdate();
+		System.out.println(up +"row/s Affected..!!");
+		s5.close();
+		
+		
+		//5. DELETE from Table
+		System.out.println("Enter the roll no which u want to delete : ");
+		int d = sc.nextInt();
+		
+		PreparedStatement s4 = con.prepareStatement("delete from student1 where rno = ?");
+		s4.setInt(1, d);
+		int dl = s4.executeUpdate();				
+		System.out.println(dl + "Recored deleted successfully..!!");
+		
+		
+				
+		con.close();
+		sc.close();
+
+	}
+
+}
+
+
+
+====================================================================================================================
+
+Que 10)
+----------
+
+package JDBC;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+
+
+public class Que10 {
+
+	public static void main(String[] args) throws Exception{
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/CDAC1", "root", "");
+		Statement s = con.createStatement();
+		ResultSet rs = s.executeQuery("Select * from Student3");
+		int count=0;
+		while(rs.next()) {
+			count++;
+		}
+		System.out.println("Number of records present in the Table is : " +count);
+		s.close();
+		con.close();
+	}
+}
+
+====================================================================================================================
+
+Que 11)
+---------
+
+PROCEDURE
+------------------
+
+Delimiter %
+create procedure InsertStudent(rno int, name varchar(35), marks int, date_of_birth date )
+Begin 
+	insert into student3(rno, name, marks, date_of_birth) values (rno, name, marks, date_of_birth);
+End; %
+Delimiter ;
+
+drop procedure InsertStudent;
+call InsertStudent(8, "H", 500, "1996-12-20");
+select * from student3;
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+package JDBC;
+
+import java.util.Scanner;
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+import com.mysql.jdbc.CallableStatement;
+
+public class Que11 {
+
+	public static void main(String[] args) throws Exception {
+		Scanner sc = new Scanner(System.in);
+				
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/CDAC1", "root", "");
+		
+		System.out.println("Enter the number of records u want to insert : ");
+		int n = sc.nextInt();
+		
+		for(int i=0; i<n; i++) {
+			CallableStatement s =  (CallableStatement) con.prepareCall("{ call InsertStudent(?, ?, ?,?)}");
+			System.out.println("Enter Roll No : ");
+			int rno = sc.nextInt();
+			
+			sc.nextLine();
+			System.out.println("Enter Name : ");
+			String name = sc.nextLine();
+			
+			System.out.println("Enter Marks : ");
+			int marks = sc.nextInt();
+			
+			sc.nextLine();
+			System.out.println("Enter Date Of Birth : ");
+			String date = sc.nextLine();
+			
+			s.setInt(1, rno);
+			s.setString(2, name);
+			s.setInt(3, marks);
+			s.setString(4, date);
+			
+			int count = s.executeUpdate();
+			System.out.println(count +"record Added..!!");		
+			s.close();
+		}
+		
+		sc.close();
+		con.close();
+	}
+
+}
+
+
+====================================================================================================================
+
+Que 12)
+---------
+
+TABLE CREATION
+-------------------------
+
+package JDBC;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+
+public class Que12A {
+
+	public static void main(String[] args) throws Exception {
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/CDAC1", "root", "");
+		
+		//Create table Employee
+		Statement s = con.createStatement();
+		s.execute("Create table Employee  (id int primary key, name varchar(50),  salary float, join_date date)");
+		System.out.println("Employee Table created successfully....!!!");
+		s.close();
+		
+		//  create table Address
+		Statement s1 = con.createStatement();
+		s1.execute("create table Address (Addr_id int Primary Key, city varchar(50), country varchar(20), emp_id int, FOREIGN KEY Address(emp_id) REFERENCES Employee(id))");
+				
+		System.out.println("Address Table created successfully....!!!");
+		s1.close();
+	}
+
+}
+
+
+DATA INSERTION
+------------------------
+package JDBC;
+
+import java.util.Scanner;
+
+import com.mysql.jdbc.PreparedStatement;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+
+public class Que12 {
+
+	public static void main(String[] args) throws Exception{
+		
+		Scanner sc = new Scanner(System.in);
+		
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/CDAC1", "root", "");
+				
+		//Insert into Employee table
+		System.out.println("Enter the number of records u want to insert into Employee Table : ");
+		int e = sc.nextInt();
+		
+		for(int i=0; i<e; i++) {
+			System.out.print("Enter ID : ");
+			int id = sc.nextInt();
+			
+			sc.nextLine();
+			System.out.print("Enter Employee Name : ");
+			String name = sc.next();
+			
+			System.out.print("Enter Employee Salary : ");
+			float salary = sc.nextFloat();
+			
+			sc.nextLine();
+			System.out.print("Enter Joining Date : ");
+			String date = sc.nextLine();
+			
+			java.sql.PreparedStatement s2 = con.prepareStatement("Insert into Employee (id , name ,  salary , join_date) values (?, ?, ?,? )");
+			s2.setInt(1, id);
+			s2.setString(2, name);
+			s2.setFloat(3, salary);
+			s2.setString(4, date);
+			
+			int count = s2.executeUpdate();
+			System.out.println(count +" row/s Affected..!!");
+			
+			s2.close();						
+		}
+
+		//Insert into Address Table
+		System.out.println("Enter the number of records u want to insert into Address Table : ");
+		int f = sc.nextInt();
+		
+		for(int i=0; i<f; i++) {
+			
+			System.out.print("Enter address ID : ");
+			int Addr_id = sc.nextInt();
+			
+			sc.nextLine();
+			System.out.print("Enter City : ");
+			String city = sc.next();
+			
+			System.out.print("Enter Country : ");
+			String country = sc.nextLine();
+			
+			sc.nextLine();
+			System.out.print("Enter Employee Id : ");
+			int id = sc.nextInt();
+			
+			java.sql.PreparedStatement s3 = con.prepareStatement("Insert into Address (Addr_id, city, Country, id) values (?, ?, ?, ?)");
+			s3.setInt(1, Addr_id);
+			s3.setString(2, city);
+			s3.setString(3, country);
+			s3.setInt(4, id);
+			
+			int count = s3.executeUpdate();
+			System.out.println(count +" row/s Affected..!!");
+			
+			s3.close();						
+		}
+
+		
+		sc.close();
+	}
+
+}
+
+
+====================================================================================================================
+
+Que 13)
+---------
+
+package JDBC;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+public class Que13 {
+
+	public static void main(String[] args) throws Exception {
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/CDAC1", "root", "");
+		Statement s = con.createStatement();
+		ResultSet rs = s.executeQuery("Select employee.id, employee.name, employee.salary, employee.join_date, Address.addr_id, Address.city, Address.emp_id from employee, Address \r\n" + 
+				"where Employee.id = Address.emp_id");
+		
+		while(rs.next()) {
+			System.out.println(rs.getInt(1)+ "  " +rs.getString(2)+ "  " +rs.getFloat(3)+"  " +rs.getString(4)+ "  " +rs.getInt(5)+"  " +rs.getString(6) + "  " +rs.getInt(7));
+		}
+		
+
+
+	}
+
+}
+
+====================================================================================================================
+
+Que 14)
+---------
+
+package JDBC;
+
+import java.util.Scanner;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+public class Que14 {
+
+	public static void main(String[] args) throws Exception{
+		
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter the  Employee Id to fetch the Address : ");
+		int id = sc.nextInt();
+		
+		String query = "select city, country from Address where emp_id = (Select id from Employee where id = ?)";
+		
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/CDAC1", "root", "");
+		PreparedStatement s = con.prepareStatement(query);
+		s.setInt(1,id);
+		ResultSet rs = s.executeQuery();
+		while(rs.next()) {
+			System.out.println(rs.getString(1) + "  " +rs.getString(2));
+		}
+		
+		sc.close();
+		s.close();
+		con.close();
+
+	}
+
+}
+
+====================================================================================================================
+
+Que 15)
+---------
+
+package JDBC;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Scanner;
+
+public class Que15 {
+
+	public static void main(String[] args) throws Exception {
+		Scanner sc = new Scanner(System.in);
+		System.out.print("Enter the City : ");
+		String city = sc.nextLine();
+		
+		String query = "Select name from Employee where id IN (select emp_id from Address where city = ?)" ;		
+				
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/CDAC1", "root", "");
+		PreparedStatement s = con.prepareStatement(query);
+		s.setString(1, city);
+		
+		ResultSet rs = s.executeQuery();
+		
+		while(rs.next()) {
+			System.out.println(rs.getString("name"));
+		}
+		
+		s.close();
+		con.close();
+		sc.close();
+		
+		
+
+	}
+
+}
+
+
+
+====================================================================================================================
+
+Que16)
+--------
+
+package JDBC;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+
+public class Que16 {
+	public static void main(String[] args) throws Exception {
+		
+		
+		String query = "select * from employee where salary = (select max(salary) from employee)" ;		
+				
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/CDAC1", "root", "");
+		Statement s = con.createStatement();
+		
+		ResultSet rs = s.executeQuery(query);
+		
+		while(rs.next()) {
+			System.out.println(rs.getInt(1) + "  " +rs.getString(2) + "  " +rs.getFloat(3) + "  " +rs.getString(4));
+		}
+		
+		s.close();
+		con.close();
+
+	}
+}
+
+
+
+
+====================================================================================================================
+
+Que 17)
+---------
+
+package JDBC;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+public class Que17 {
+
+	public static void main(String[] args) throws Exception {
+		String query = "select * from employee where ( current_date() - join_date) > 5" ;		
+		
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/CDAC1", "root", "");
+		Statement s = con.createStatement();
+		
+		ResultSet rs = s.executeQuery(query);
+		
+		while(rs.next()) {
+			System.out.println(rs.getInt(1) + "  " +rs.getString(2) + "  " +rs.getFloat(3) + "  " +rs.getString(4));
+		}
+		
+		s.close();
+		con.close();
+
+	}
+
+}
+
+====================================================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
