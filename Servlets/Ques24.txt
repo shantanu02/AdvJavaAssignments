@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<form action="ArithmeticServlet" method="post">
+		First Number: <input type="number" name="first"><br>
+		Second Number: <input type="number" name="second"><br>
+		Operation:
+		<input type="radio" name="cal" value="Add">Add
+		<input type="radio" name="cal" value="Subtract">Subtract
+		<input type="radio" name="cal" value="Multiply">Multiply
+		<input type="radio" name="cal" value="Divide">Divide
+		
+		<br>
+		<input type="submit" value="Result">
+	
+	</form>
+
+</body>
+</html>
+
+===================================================================================
+
+package Assignments_1;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
+@WebServlet("/ArithmeticServlet")
+public class ArithmeticServlet extends HttpServlet {
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String a = request.getParameter("first");
+		Integer i1 = Integer.parseInt(a);
+		String b = request.getParameter("second");
+		Integer i2 = Integer.parseInt(b);
+		response.setContentType("text/html");
+		PrintWriter out = response.getWriter();
+		String s = request.getParameter("cal");
+		
+		double res = 0;
+		if(s.equals("Add")) {
+			 res = i1 + i2;
+		}
+		if(s.equals("Substract")) {
+			res = i1 - i2;
+		}
+		if(s.equals("Multiply")) {
+			res = i1 * i2;
+		}
+		if(s.equals("Divide")) {
+			res =(double)i1 / i2;
+		}
+		
+		out.print("<h3>"+s+" of "+i1+" and "+i2+" is <h3>"+res+"</h3></h2>");
+		out.flush();
+		out.close();
+	}
+
+}

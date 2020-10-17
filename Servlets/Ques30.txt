@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<h2>Registration Form</h2>
+	<form action="Registration30" method="post">
+	Name : <input type="text" name="uname" value="" >
+	<br>
+	Gender : <input type="radio" name="gender" value="Male">Male 
+			 <input type="radio" name="gender" value="Female">Female 
+	<br>
+	City : <select name="city">
+			<option>Mumbai</option>
+			<option>Pune</option>
+			<option>Chandrapur</option>
+	</select>
+	<br>
+	Languages : <input type="checkbox" name="lang" value="Hindi">Hindi
+				 <input type="checkbox" name="lang" value="English">English
+				  <input type="checkbox" name="lang" value="Marathi">Marathi
+	<br>
+	 <input type="Submit" value="Register">
+	
+	</form>
+</body>
+</html>
+
+===================================================================================================
+
+package Assignments_1;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
+@WebServlet("/Registration30")
+public class Registration30 extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	
+	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		String nm = req.getParameter("uname");
+		String gen = req.getParameter("gender");
+		String c = req.getParameter("city");
+		String lan[] = req.getParameterValues("lang");
+		
+		res.setContentType("text/html");
+		PrintWriter out = res.getWriter();
+		
+		if(nm == "" || gen == null || c == null || lan == null) {
+			RequestDispatcher rd = req.getRequestDispatcher("/RegistrationFormDetail30");
+			rd.include(req, res);
+		}else {
+			out.print("<h2>Welcome to the Anonymous App</h2>");
+		}
+	}
+
+}
+
+=====================================================================================
+
+
+package Assignments_1;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
+@WebServlet("/RegistrationFormDetail30")
+public class RegistrationFormDetail30 extends HttpServlet {
+	
+	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		
+		String nm = req.getParameter("uname");
+		String gen = req.getParameter("gender");
+		String c = req.getParameter("city");
+		String lan[] = req.getParameterValues("lang");
+		
+		
+		res.setContentType("text/html");
+		PrintWriter out = res.getWriter();
+		out.print("Fill the remaining information..."+nm);
+//		out.print("Fill the remaining information..."+gen);
+//		out.print("Fill the remaining information..."+c);
+		
+		req.setAttribute("NAME", nm);
+		req.setAttribute("GENDER", gen);
+		req.setAttribute("CITY", c);
+		req.setAttribute("LANG", lan);
+		
+		
+		RequestDispatcher rd = req.getRequestDispatcher("Ques30.jsp");
+		rd.forward(req, res);
+		
+	}
+
+}
+
+
+======================================================================================================
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<h2>Registration Form</h2>
+	<form action="Registration30" method="post">
+	Name : <input type="text" name="uname" value="${NAME }" >
+	<br>
+	
+	
+	<% String selection = request.getParameter("gender"); 
+		String r1 = "";
+		if(selection.equals("Male"))
+			r1=" checked";
+		String r2="";
+		if(selection.equals("Female"))
+			r2=" checked";
+		
+		String selection2 = request.getParameter("city");
+		String o1="";
+		if(selection2.equals("Mumbai"))
+			o1=" selected";
+		String o2="";
+		if(selection2.equals("Pune"))
+			o2=" selected";
+		String o3="";
+		if(selection2.equals("Chandrapur"))
+			o3=" selected";
+
+	%>
+	
+	Gender : <input type="radio" name="gender" value="Male" <%=r1 %>>Male 
+			 <input type="radio" name="gender" value="Female" <%=r2 %> >Female 
+	<br>
+	
+	
+	
+	City : <select name="city">
+			<option <%=o1 %>>Mumbai</option>
+			<option <%=o2 %>>Pune</option>
+			<option <%=o3 %>>Chandrapur</option>
+	</select>
+	<br>
+	Languages : <input type="checkbox" name="lang" value="Hindi">Hindi
+				 <input type="checkbox" name="lang" value="English">English
+				  <input type="checkbox" name="lang" value="Marathi">Marathi
+	<br>
+	 <input type="Submit" value="Register">
+	
+	</form>
+</body>
+</html>
+
+
+
+

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<form action="Ques25_1" method="post">
+	<input type="text" name="user">
+	<input type="submit" value="Submit">
+	
+	
+	</form>
+</body>
+</html>
+
+============================================================
+
+package Assignments_1;
+
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class Ques25_1
+ */
+@WebServlet("/Ques25_1")
+public class Ques25_1 extends HttpServlet {
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		RequestDispatcher rd = request.getRequestDispatcher("/Ques25_2");
+		rd.forward(request, response);
+	}
+
+}
+
+====================================================================================================
+
+package Assignments_1;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
+@WebServlet("/Ques25_2")
+public class Ques25_2 extends HttpServlet {
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String name = request.getParameter("user");
+		response.setContentType("text/html");
+		PrintWriter out = response.getWriter();
+		out.print("<h3>"+name+"</h3>");
+		out.flush();
+		out.close();
+	}
+
+}

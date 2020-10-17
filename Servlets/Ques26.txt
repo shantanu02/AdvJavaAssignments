@@ -1,0 +1,33 @@
+package Assignments_1;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
+@WebServlet("/Ques26")
+public class Ques26 extends HttpServlet {
+	static int count = 1;
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/html");
+		PrintWriter out = response.getWriter();
+		String k = String.valueOf(count);
+		Cookie c = new Cookie("visit",k);
+		response.addCookie(c);
+		int j = Integer.parseInt(c.getValue());
+		if(j==1) {
+			out.print("Welcome to the site");
+		}else {
+			out.print("You have visited this site "+count+" times");
+		}
+		count++;
+		
+	}
+
+}

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<form action="Ques22" method="get">
+		<input type="submit" value="GET">
+	</form>
+	
+	<form action="Ques22" method="post">
+		<input type="submit" value="POST">
+	</form>
+	
+</body>
+</html>
+
+=========================================================================================================
+
+package Assignments_1;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
+@WebServlet("/Ques22")
+public class Ques22 extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/html");
+		PrintWriter out = response.getWriter();
+		out.print("<h2 style='color :red'>YOU HAVE SELECTED GET TYPE REQUEST</h2>");
+		out.flush();
+		out.close();
+	}
+
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/html");
+		PrintWriter out = response.getWriter();
+		out.print("<h2 style='color :green'>YOU HAVE SELECTED POST TYPE REQUEST</h2>");
+		out.flush();
+		out.close();
+	}
+
+}

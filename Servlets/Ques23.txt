@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<form action="Ques23" method="post">
+		<input type="text" name="txt" place holder="Enter Your Name">
+		<input type="submit" value="Submit">
+	
+	</form>
+
+</body>
+</html>
+
+=====================================================
+
+package Assignments_1;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
+@WebServlet("/Ques23")
+public class Ques23 extends HttpServlet {
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String nm = request.getParameter("txt");
+		response.setContentType("text/html");
+		PrintWriter out = response.getWriter();
+		out.print("<h3>WELCOME "+nm+"</h3>");
+		out.flush();
+		out.close();
+	}
+
+}
