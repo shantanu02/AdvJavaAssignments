@@ -1,0 +1,5 @@
+ public String realPath(HttpServletRequest request, ServletContext servletContext){
+    String requestURI = request.getRequestURI();
+    String realPath = servletContext.getRealPath(requestURI);
+    return realPath;
+}
